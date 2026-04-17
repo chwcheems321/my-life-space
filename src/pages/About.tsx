@@ -1,5 +1,5 @@
 import { motion } from 'framer-motion'
-import { MapPin, Calendar, Heart } from 'lucide-react'
+import { Heart } from 'lucide-react'
 import { useApp } from '@/context/AppContext'
 
 export default function About() {
@@ -63,7 +63,7 @@ export default function About() {
           { label: '日记', value: stats.diaries, emoji: '📔' },
           { label: '照片', value: stats.photos, emoji: '📷' },
           { label: '视频', value: stats.videos, emoji: '🎬' },
-        ].map((stat, idx) => (
+        ].map((stat) => (
           <div
             key={stat.label}
             className="bg-card rounded-xl p-6 text-center shadow-soft"
