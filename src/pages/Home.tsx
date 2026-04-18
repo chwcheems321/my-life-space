@@ -1,18 +1,18 @@
 import { useState } from 'react'
 import { motion } from 'framer-motion'
-import { Filter } from 'lucide-react'
+import { Sparkles } from 'lucide-react'
+import { Link } from 'react-router-dom'
 import { useApp } from '@/context/AppContext'
 import PostCard from '@/components/feed/PostCard'
 import { PostType } from '@/types'
 import { cn } from '@/lib/utils'
 
-const filters: { label: string; value: PostType | 'all' }[] = [
-  { label: '全部', value: 'all' },
-  { label: '博客', value: 'blog' },
-  { label: '日记', value: 'diary' },
-  { label: '想法', value: 'idea' },
-  { label: '相册', value: 'photo' },
-  { label: '视频', value: 'video' },
+const filters: { label: string; value: PostType | 'all'; emoji: string }[] = [
+  { label: '全部', value: 'all', emoji: '✨' },
+  { label: '图文', value: 'photo', emoji: '📷' },
+  { label: '视频', value: 'video', emoji: '🎬' },
+  { label: '日记', value: 'diary', emoji: '📔' },
+  { label: '想法', value: 'idea', emoji: '💭' },
 ]
 
 export default function Home() {
@@ -25,68 +25,87 @@ export default function Home() {
 
   return (
     <motion.div
-      initial={{ opacity: 0, y: 20 }}
-      animate={{ opacity: 1, y: 0 }}
-      transition={{ duration: 0.3 }}
-      className="py-6"
+      initial={{ opacity: 0 }}
+      animate={{ opacity: 1 }}
+      transition={{ duration: 0.4 }}
+      className="py-8"
     >
-      {/* Hero */}
-      <div className="text-center mb-8">
-        <h1 className="font-serif text-3xl md:text-4xl font-bold text-foreground mb-2">
-          记录正在发生的生活
+      {/* Hero Section */}
+      <motion.div 
+        initial={{ opacity: 0, y: 20 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ delay: 0.1 }}
+        className="text-center mb-10"
+      >
+        <div className="inline-flex items-center gap-2 bg-white rounded-full px-5 py-2 shadow-cute mb-4">
+          <Sparkles className="w-4 h-4 text-primary animate-sparkle" />
+          <span className="text-sm text-muted">记录美好的瞬间</span>
+        </div>
+        <h1 className="text-3xl md:text-4xl font-bold mb-3">
+          <span className="gradient-text">日常碎片</span>
         </h1>
         <p className="text-muted">
-          每一个瞬间，都值得被珍藏
+          照片 · 视频 · 想法 · 日记
         </p>
-      </div>
+      </motion.div>
 
       {/* Filters */}
-      <div className="flex items-center gap-2 mb-6 overflow-x-auto pb-2">
-        <Filter className="w-4 h-4 text-muted flex-shrink-0" />
+      <motion.div 
+        initial={{ opacity: 0, y: 10 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ delay: 0.2 }}
+        className="flex items-center justify-center gap-2 mb-8 flex-wrap"
+      >
         {filters.map(filter => (
           <button
             key={filter.value}
             onClick={() => setActiveFilter(filter.value)}
             className={cn(
-              "px-4 py-2 rounded-full text-sm font-medium whitespace-nowrap transition-all",
+              "px-4 py-2 rounded-full text-sm font-medium whitespace-nowrap transition-all duration-300",
               activeFilter === filter.value
-                ? "bg-primary text-white"
-                : "bg-secondary text-muted hover:bg-primary/10 hover:text-primary"
+                ? "bg-gradient-to-r from-primary to-primary-dark text-white shadow-cute"
+                : "bg-white text-muted hover:bg-secondary hover:text-primary-dark shadow-soft"
             )}
           >
+            <span className="mr-1">{filter.emoji}</span>
             {filter.label}
           </button>
         ))}
-      </div>
+      </motion.div>
 
-      {/* Posts */}
+      {/* Posts Grid */}
       {filteredPosts.length > 0 ? (
         <div className="space-y-5">
-          {filteredPosts.map(post => (
+          {filteredPosts.map((post, index) => (
             <motion.div
               key={post.id}
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.3 }}
+              transition={{ delay: index * 0.05, duration: 0.3 }}
             >
               <PostCard post={post} />
             </motion.div>
           ))}
         </div>
       ) : (
-        <div className="text-center py-16">
-          <div className="w-24 h-24 mx-auto mb-4 rounded-full bg-secondary flex items-center justify-center">
-            <span className="text-4xl">📝</span>
+        <motion.div 
+          initial={{ opacity: 0, scale: 0.95 }}
+          animate={{ opacity: 1, scale: 1 }}
+          className="text-center py-20"
+        >
+          <div className="w-32 h-32 mx-auto mb-6 rounded-3xl bg-gradient-to-br from-secondary to-accent flex items-center justify-center shadow-cute animate-float">
+            <span className="text-6xl">🌸</span>
           </div>
-          <h3 className="font-serif text-xl text-foreground mb-2">还没有内容</h3>
-          <p className="text-muted mb-4">开始记录你的第一个瞬间吧</p>
-          <a
-            href="/create"
-            className="inline-flex items-center justify-center h-10 px-6 bg-primary text-white rounded-lg font-medium hover:bg-[#D9A090] transition-colors"
+          <h3 className="text-xl font-bold text-foreground mb-2">还没有内容</h3>
+          <p className="text-muted mb-6">开始记录你的第一个美好瞬间吧</p>
+          <Link
+            to="/create"
+            className="inline-flex items-center gap-2 cute-btn"
           >
-            写点什么
-          </a>
-        </div>
+            <span>✨</span>
+            开始记录
+          </Link>
+        </motion.div>
       )}
     </motion.div>
   )

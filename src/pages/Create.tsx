@@ -122,7 +122,7 @@ export default function Create() {
     navigate('/')
   }
 
-  const canProceed = () => {
+  const _canProceed = () => {
     if (step === 2 && !postType) return false
     if (step === 3 && !content.trim()) return false
     if (step === 4 && postType !== 'idea' && media.length === 0) return false
