@@ -121,14 +121,6 @@ export default function Create() {
 
     navigate('/')
   }
-
-  const handleNext = () => {
-    if (step === 2 && !postType) return false
-    if (step === 3 && !content.trim()) return false
-    if (step === 4 && postType !== 'idea' && media.length === 0) return false
-    return true
-  }
-
   const handleNext = () => {
     const needsMediaStep = postType === 'photo' || postType === 'video'
     const maxStep = needsMediaStep ? 4 : 3
@@ -138,7 +130,6 @@ export default function Create() {
       handleSubmit()
     }
   }
-
   const needsMediaStep = postType === 'photo' || postType === 'video'
 
   return (
